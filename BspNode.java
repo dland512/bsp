@@ -1,12 +1,12 @@
-public class BspNode<T extends MapStructure> {
+public class BspNode {
    private BspNode front;
    private BspNode back;
-   private T structure;
+   private Wall wall;
 
-   public BspNode(T structure) {
+   public BspNode(Wall wall) {
       this.front = null;
       this.back = null;
-      this.structure = structure;
+      this.wall = wall;
    }
 
    public BspNode getFront() {
@@ -25,11 +25,11 @@ public class BspNode<T extends MapStructure> {
       this.back = node;
    }
 
-   public T getStructure() {
-      return structure;
+   public Wall getWall() {
+      return wall;
    }
 
    public String toString() {
-      return this.structure.toString();
+      return this.wall.toString();
    }
 }

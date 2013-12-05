@@ -35,14 +35,14 @@ public class BspTree {
    private SideAssignment assignSides(List<BspNode> nodes) {
       SideAssignment a = new SideAssignment();
       a.middle = nodes.remove(nodes.size() / 2);
-      MapStructure mid = a.middle.getStructure();
+      Wall mid = a.middle.getWall();
 
       for(int i = 0; i < nodes.size(); i++) {
          BspNode n = nodes.get(i);
-         MapStructure struct = n.getStructure();
+         Wall struct = n.getWall();
 
          if(mid.intersects(struct)) {
-            MapStructure[] split = mid.split(struct);
+            Wall[] split = mid.split(struct);
             a.front.add(new BspNode(split[0]));
             a.back.add(new BspNode(split[1]));
          }

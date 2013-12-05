@@ -1,4 +1,4 @@
-public class Wall implements MapStructure {
+public class Wall {
    public enum Front {
       X_POS,
       X_NEG,
@@ -23,30 +23,28 @@ public class Wall implements MapStructure {
       this.front = front;
    }
 
-   public boolean inFrontOf(MapStructure other) {
-      Wall otherWall = (Wall)other;
-      
+   public boolean inFrontOf(Wall other) {
       if(this.y1 == this.y2) {
          //special case for horizontal line
          if(this.front == Front.Y_POS)
-            return otherWall.y1 > this.y1;
+            return other.y1 > this.y1;
          else
-            return otherWall.y1 < this.y1;
+            return other.y1 < this.y1;
       }
       else {
          //first pick a point on the line to use
          float y = this.y1;
 
          //find the t value for the other line at the y value of this line by starting with
-         //y = otherWall.y1 + t * (otherWall.y2 - otherWall.y1)
+         //y = other.y1 + t * (other.y2 - other.y1)
          //and solving for t
-         float t = (y - otherWall.y1) / (otherWall.y2 - otherWall.y1);
+         float t = (y - other.y1) / (other.y2 - other.y1);
          
          //now find the x value at that point on the other line
-         float x = otherWall.x1 + t * (otherWall.x2 - otherWall.x1);                                           
+         float x = other.x1 + t * (other.x2 - other.x1);                                           
 
          //check if the x value is on the same side of the wall as the front
-         if(otherWall.front == Wall.Front.X_POS)
+         if(other.front == Wall.Front.X_POS)
             return this.x1 >= x;
          else
             return this.x1 <= x;
@@ -57,10 +55,8 @@ public class Wall implements MapStructure {
       return "(" + this.x1 + ", " + this.y1 + "), (" + this.x2 + ", " + this.y2 + ")";
    }
 
-   public boolean intersects(MapStructure other) {
-      Wall otherWall = (Wall)other;
-
-      float[] vals = calcIntersectionValues(this, otherWall);
+   public boolean intersects(Wall other) {
+      float[] vals = calcIntersectionValues(this, other);
       float tn = vals[0];
       float td = vals[1];
 
@@ -71,26 +67,24 @@ public class Wall implements MapStructure {
          return false;
    }
 
-   public MapStructure[] split(MapStructure other) {
-      Wall otherWall = (Wall)other;
-
-      float[] vals = calcIntersectionValues(this, otherWall);
+   public Wall[] split(Wall other) {
+      float[] vals = calcIntersectionValues(this, other);
       float tn = vals[0];
       float td = vals[1];
       float t = tn / td;
 
       //get point of intersection
-      float xInter = otherWall.x1 + (otherWall.x2 - otherWall.x1) * t;
-      float yInter = otherWall.y1 + (otherWall.y2 - otherWall.y1) * t;
+      float xInter = other.x1 + (other.x2 - other.x1) * t;
+      float yInter = other.y1 + (other.y2 - other.y1) * t;
 
       //split the segment in two on the intersection
       Wall newWall = new Wall();
-      newWall.x1 = otherWall.x1;
-      newWall.y1 = otherWall.y1;
+      newWall.x1 = other.x1;
+      newWall.y1 = other.y1;
       newWall.x2 = xInter;
       newWall.y2 = yInter;
-      otherWall.x1 = xInter;
-      otherWall.y1 = yInter;
+      other.x1 = xInter;
+      other.y1 = yInter;
 
       Wall frontSeg = null;
       Wall backSeg = null;
@@ -100,10 +94,10 @@ public class Wall implements MapStructure {
          //if wall's front is in -x, find which side of split is farther in that direction
          if(Math.min(newWall.x1, xInter) < xInter) {
             frontSeg = newWall;
-            backSeg = otherWall;
+            backSeg = other;
          }
          else {
-            frontSeg = otherWall;
+            frontSeg = other;
             backSeg = newWall;
          }
       }
@@ -111,10 +105,10 @@ public class Wall implements MapStructure {
          //if wall's front is in +x, find which side of split is farther in that direction
          if(Math.max(newWall.x1, xInter) > xInter) {
             frontSeg = newWall;
-            backSeg = otherWall;
+            backSeg = other;
          }
          else {
-            frontSeg = otherWall;
+            frontSeg = other;
             backSeg = newWall;
          }
       }

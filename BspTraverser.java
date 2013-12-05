@@ -7,13 +7,13 @@ public class BspTraverser {
       this.visitor = visitor;
    }
 
-   public void traverseInward(int pov) {
+   public void traverseInward(Point pov) {
       traverseInwardRec(tree.getRoot(), pov);
    }
 
-   private void traverseInwardRec(BspNode node, int pov) {
+   private void traverseInwardRec(BspNode node, Point pov) {
       if(node != null) {
-         if(inFront(pov, node)) {
+         if(pov.inFrontOf(node.getWall())) {
             traverseInwardRec(node.getBack(), pov);
             visitor.visitNode(node);
             traverseInwardRec(node.getFront(), pov);
@@ -26,13 +26,13 @@ public class BspTraverser {
       }
    }
 
-   public void traverseOutward(int pov) {
+   public void traverseOutward(Point pov) {
       traverseOutwardRec(tree.getRoot(), pov);
    }
 
-   private void traverseOutwardRec(BspNode node, int pov) {
+   private void traverseOutwardRec(BspNode node, Point pov) {
       if(node != null) {
-         if(inFront(pov, node)) {
+         if(pov.inFrontOf(node.getWall())) {
             traverseOutwardRec(node.getFront(), pov);
             visitor.visitNode(node);
             traverseOutwardRec(node.getBack(), pov);
@@ -43,12 +43,6 @@ public class BspTraverser {
             traverseOutwardRec(node.getFront(), pov);
          }
       }
-   }
-
-   private boolean inFront(int pov, BspNode node) {
-      IntegerNodeValue v = (IntegerNodeValue)node.getStructure();
-      Integer i = Integer.parseInt(v.toString());
-      return pov <= i;
    }
 
    public void print() {
