@@ -44,9 +44,9 @@ public class BspTree {
          if(mid.intersects(struct)) {
             MapStructure[] split = mid.split(struct);
             a.front.add(new BspNode(split[0]));
-            a.front.add(new BspNode(split[1]));
+            a.back.add(new BspNode(split[1]));
          }
-         if(struct.inFrontOf(mid)) {
+         else if(struct.inFrontOf(mid)) {
             a.front.add(n);
          }
          else {

@@ -92,7 +92,34 @@ public class Wall implements MapStructure {
       otherWall.x1 = xInter;
       otherWall.y1 = yInter;
 
-      return new Wall[] { otherWall, newWall };
+      Wall frontSeg = null;
+      Wall backSeg = null;
+
+      //set front and back according to which parts of split lie on front of this wall
+      if(this.front == Wall.Front.X_NEG) {
+         //if wall's front is in -x, find which side of split is farther in that direction
+         if(Math.min(newWall.x1, xInter) < xInter) {
+            frontSeg = newWall;
+            backSeg = otherWall;
+         }
+         else {
+            frontSeg = otherWall;
+            backSeg = newWall;
+         }
+      }
+      else {
+         //if wall's front is in +x, find which side of split is farther in that direction
+         if(Math.max(newWall.x1, xInter) > xInter) {
+            frontSeg = newWall;
+            backSeg = otherWall;
+         }
+         else {
+            frontSeg = otherWall;
+            backSeg = newWall;
+         }
+      }
+
+      return new Wall[] { frontSeg, backSeg };
    }
 
    private float[] calcIntersectionValues(Wall wall1, Wall wall2) {

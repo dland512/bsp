@@ -58,6 +58,7 @@ public class BspTraverser {
    private void printRec(BspNode n) {
       if(n != null) {
          printRec(n.getFront());
+         System.out.println(n);
          printRec(n.getBack());
       }
    }

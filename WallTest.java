@@ -28,17 +28,37 @@ public class WallTest {
         
         MapStructure[] segs = w1.split(w2);
 
-        Wall nw1 = (Wall)segs[0];
-        Assert.assertEquals(nw1.x1, 6.0, 0);
-        Assert.assertEquals(nw1.y1, 6.0, 0);
-        Assert.assertEquals(nw1.x2, 8.0, 0);
-        Assert.assertEquals(nw1.y2, 4.0, 0);
+        Wall front = (Wall)segs[0];
+        Assert.assertEquals(front.x1, 6.0, 0);
+        Assert.assertEquals(front.y1, 6.0, 0);
+        Assert.assertEquals(front.x2, 8.0, 0);
+        Assert.assertEquals(front.y2, 4.0, 0);
 
-        Wall nw2 = (Wall)segs[1];
-        Assert.assertEquals(nw2.x1, 4.0, 0);
-        Assert.assertEquals(nw2.y1, 8.0, 0);
-        Assert.assertEquals(nw2.x2, 6.0, 0);
-        Assert.assertEquals(nw2.y2, 6.0, 0);
+        Wall back = (Wall)segs[1];
+        Assert.assertEquals(back.x1, 4.0, 0);
+        Assert.assertEquals(back.y1, 8.0, 0);
+        Assert.assertEquals(back.x2, 6.0, 0);
+        Assert.assertEquals(back.y2, 6.0, 0);
+    }
+
+    @Test
+    public void intersectionPoints2() {
+        Wall w1 = new Wall(1, 1, 3, 3, Wall.Front.X_NEG);
+        Wall w2 = new Wall(4, 8, 8, 4, Wall.Front.X_POS);
+        
+        MapStructure[] segs = w1.split(w2);
+
+        Wall front = (Wall)segs[0];
+        Assert.assertEquals(front.x1, 4.0, 0);
+        Assert.assertEquals(front.y1, 8.0, 0);
+        Assert.assertEquals(front.x2, 6.0, 0);
+        Assert.assertEquals(front.y2, 6.0, 0);
+
+        Wall back = (Wall)segs[1];
+        Assert.assertEquals(back.x1, 6.0, 0);
+        Assert.assertEquals(back.y1, 6.0, 0);
+        Assert.assertEquals(back.x2, 8.0, 0);
+        Assert.assertEquals(back.y2, 4.0, 0);
     }
 
     @Test
