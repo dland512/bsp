@@ -8,42 +8,52 @@ public class BspTree {
    }
 
    public void compile(List<BspNode> nodes) {
-      Split split = this.split(nodes);
-      this.root = compileRec(split.front, split.middle, split.back);
+      SideAssignment assignment = this.assignSides(nodes);
+      this.root = compileRec(assignment.front, assignment.middle, assignment.back);
    }
 
    private BspNode compileRec(List<BspNode> frontNodes, BspNode middle, List<BspNode> backNodes) {
       if(frontNodes.size() > 0) {
-         Split front = this.split(frontNodes);
-         middle.setFront(compileRec(front.front, front.middle, front.back));
+         SideAssignment a = this.assignSides(frontNodes);
+         middle.setFront(compileRec(a.front, a.middle, a.back));
       }
 
       if(backNodes.size() > 0) {
-         Split back = this.split(backNodes);
-         middle.setBack(compileRec(back.front, back.middle, back.back));
+         SideAssignment a = this.assignSides(backNodes);
+         middle.setBack(compileRec(a.front, a.middle, a.back));
       }
 
       return middle;
    }
 
-   private class Split {
+   private class SideAssignment {
       public List<BspNode> front = new ArrayList<BspNode>();
       public BspNode middle;
       public List<BspNode> back = new ArrayList<BspNode>();
    }
 
-   private Split split(List<BspNode> nodes) {
-      Split s = new Split();
-      s.middle = nodes.remove(nodes.size() / 2);
+   private SideAssignment assignSides(List<BspNode> nodes) {
+      SideAssignment a = new SideAssignment();
+      a.middle = nodes.remove(nodes.size() / 2);
+      MapStructure mid = a.middle.getStructure();
 
       for(int i = 0; i < nodes.size(); i++) {
          BspNode n = nodes.get(i);
-         if(n.inFrontOf(s.middle))
-            s.front.add(n);
-         else
-            s.back.add(n);
+         MapStructure struct = n.getStructure();
+
+         if(mid.intersects(struct)) {
+            MapStructure[] split = mid.split(struct);
+            a.front.add(new BspNode(split[0]));
+            a.front.add(new BspNode(split[1]));
+         }
+         if(struct.inFrontOf(mid)) {
+            a.front.add(n);
+         }
+         else {
+            a.back.add(n);
+         }
       }
 
-      return s;
+      return a;
    }
 }

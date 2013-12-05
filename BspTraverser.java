@@ -1,8 +1,8 @@
 public class BspTraverser {
-   private BspTree1d tree = null;
+   private BspTree tree = null;
    private NodeVisitor visitor = null;
 
-   public BspTraverser(BspTree1d tree, NodeVisitor visitor) {
+   public BspTraverser(BspTree tree, NodeVisitor visitor) {
       this.tree = tree;
       this.visitor = visitor;
    }

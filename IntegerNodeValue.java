@@ -16,4 +16,12 @@ public class IntegerNodeValue implements MapStructure {
    private Integer getInteger() {
       return intVal;
    }
+
+   public boolean intersects(MapStructure other) {
+      return false;
+   }
+
+   public MapStructure[] split(MapStructure other) {
+      return null;
+   }
 }

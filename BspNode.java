@@ -29,10 +29,6 @@ public class BspNode<T extends MapStructure> {
       return structure;
    }
 
-   public boolean inFrontOf(BspNode node) {
-      return this.structure.inFrontOf(node.getStructure());
-   }
-
    public String toString() {
       return this.structure.toString();
    }

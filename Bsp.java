@@ -13,7 +13,7 @@ public class Bsp {
       nodes.add(new BspNode<IntegerNodeValue>(new IntegerNodeValue(14)));
       nodes.add(new BspNode<IntegerNodeValue>(new IntegerNodeValue(16)));
 
-      BspTree1d tree = new BspTree1d();
+      BspTree tree = new BspTree();
       tree.compile(nodes);
 
       BspTraverser traverser = new BspTraverser(tree, new NodeVisitor());
