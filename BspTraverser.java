@@ -45,15 +45,15 @@ public class BspTraverser {
       }
    }
 
-   public void print() {
-      printRec(tree.getRoot());
+   public void printInOrder() {
+      printInOrderRec(tree.getRoot());
    }
 
-   private void printRec(BspNode n) {
+   private void printInOrderRec(BspNode n) {
       if(n != null) {
-         printRec(n.getFront());
+         printInOrderRec(n.getFront());
          System.out.println(n);
-         printRec(n.getBack());
+         printInOrderRec(n.getBack());
       }
    }
 }

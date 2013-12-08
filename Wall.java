@@ -45,9 +45,9 @@ public class Wall {
 
          //check if the x value is on the same side of the wall as the front
          if(other.front == Wall.Front.X_POS)
-            return this.x1 >= x;
+            return this.x1 > x;
          else
-            return this.x1 <= x;
+            return this.x1 < x;
       }
    }
 
@@ -60,11 +60,14 @@ public class Wall {
       float tn = vals[0];
       float td = vals[1];
 
-      //if td == 0, lines are parallel, otherwise lines intersect if tn / td <= 1
-      if(td != 0)
-         return (tn / td) <= 1;
-      else
+      //if td == 0, lines are parallel, otherwise lines intersect if 0 < (tn / td) < 1 
+      if(td != 0) {
+         float i = tn / td;
+         return i > 0 && i < 1;
+      }
+      else {
          return false;
+      }
    }
 
    public Wall[] split(Wall other) {

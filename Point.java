@@ -15,9 +15,9 @@ public class Point {
       if(wall.y1 == wall.y2) {
          //special case for horizontal line
          if(wall.front == Wall.Front.Y_POS)
-            return this.y >= wall.y1;
+            return this.y > wall.y1;
          else
-            return this.y <= wall.y1;
+            return this.y < wall.y1;
       }
       else {
          //find the t value for the other line at the y value of this line by starting with
@@ -30,9 +30,9 @@ public class Point {
 
          //check if the x value is on the same side of the wall as the front
          if(wall.front == Wall.Front.X_POS)
-            return this.x >= xpos;
+            return this.x > xpos;
          else
-            return this.x <= xpos;
+            return this.x < xpos;
       }
    }
 
