@@ -23,6 +23,7 @@ public class Wall {
       this.front = front;
    }
 
+   //determins if this wall is in front of the one passed in
    public boolean inFrontOf(Wall other) {
       if(this.y1 == this.y2) {
          //special case for horizontal line
@@ -55,6 +56,9 @@ public class Wall {
       return "(" + this.x1 + ", " + this.y1 + "), (" + this.x2 + ", " + this.y2 + ")";
    }
 
+   //determines if the entire line that this wall is part of will ever intersect the line segment
+   //(not the whole line) representing the wall passed in. So for this wall the whole line is used,
+   //for the wall passed in, just the segment is used.
    public boolean intersects(Wall other) {
       float[] vals = calcIntersectionValues(this, other);
       float tn = vals[0];
@@ -70,6 +74,10 @@ public class Wall {
       }
    }
 
+   //splits the wall passed in into two separate walls based on where this wall intersects with it. The
+   //new wall segments are returned in an array with the segment in front of this wall in the first
+   //position and the segment behind this wall in the second position. The method assumes that the two
+   //lines intersect at some point.
    public Wall[] split(Wall other) {
       float[] vals = calcIntersectionValues(this, other);
       float tn = vals[0];
@@ -119,6 +127,8 @@ public class Wall {
       return new Wall[] { frontSeg, backSeg };
    }
 
+   //magic formula for returning the numerator and denominator of the fraction that gives you the
+   //value of t for the intersection of two parameteric lines.
    private float[] calcIntersectionValues(Wall wall1, Wall wall2) {
       float x43 = wall2.x2 - wall2.x1;
       float y31 = wall2.y1 - wall1.y1;

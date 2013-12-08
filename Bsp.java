@@ -28,11 +28,38 @@ public class Bsp {
                 g.fillRect(0, 0, displayManager.getWidth(), displayManager.getHeight());
                 g.dispose();
 
+                //redraw screen from new position
                 traverser.traverseOutward(new Point(e.getX(), e.getY()));
             }
 
             public void mouseDragged(MouseEvent e) {
             }
         });
+
+        displayManager.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+               exit();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+        });
+    }
+
+    private static void exit() {
+        Thread thread = new Thread() {
+            public void run() {
+                System.exit(0);
+            }
+        };
+
+        thread.setDaemon(true);
+        thread.start();
     }
 }

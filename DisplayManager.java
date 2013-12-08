@@ -18,51 +18,23 @@ public class DisplayManager {
         new DisplayMode(1024, 768, 24, 0),
     };
 
-    private GraphicsConfiguration gc = null;
-    private BufferedImage image = null;
     private GraphicsDevice device = null;
     private Window window = null;
 
     public DisplayManager() {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         this.device = environment.getDefaultScreenDevice();
-
         DisplayMode displayMode = this.findFirstCompatibleMode(MID_RES_MODES);
         this.setFullScreen(displayMode);
-
         this.window = this.device.getFullScreenWindow();
-        this.gc = this.window.getGraphicsConfiguration();
-        this.image = gc.createCompatibleImage(this.window.getWidth(), this.window.getHeight(), Transparency.BITMASK);
-
-        this.window.addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-               exit();
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-        });
-    }
-
-    private void exit() {
-        Thread thread = new Thread() {
-            public void run() {
-                System.exit(0);
-            }
-        };
-
-        thread.setDaemon(true);
-        thread.start();
     }
 
     public void addMouseMotionListener(MouseMotionListener mml) {
         this.window.addMouseMotionListener(mml);
+    }
+
+    public void addKeyListener(KeyListener kl) {
+        this.window.addKeyListener(kl);
     }
 
     public int getWidth() {

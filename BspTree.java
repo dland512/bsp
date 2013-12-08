@@ -7,6 +7,7 @@ public class BspTree {
       return this.root;
    }
 
+   //set up the tree using the list of nodes provided.
    public void compile(List<BspNode> nodes) {
       SideAssignment assignment = this.assignSides(nodes);
       this.root = compileRec(assignment.front, assignment.middle, assignment.back);
@@ -32,6 +33,8 @@ public class BspTree {
       public List<BspNode> back = new ArrayList<BspNode>();
    }
 
+   //split the nodes array up by seleting the middle node, and assigning the rest of the nodes to
+   //be either in front of or behind it.
    private SideAssignment assignSides(List<BspNode> nodes) {
       SideAssignment a = new SideAssignment();
       a.middle = nodes.remove(nodes.size() / 2);
@@ -39,14 +42,14 @@ public class BspTree {
 
       for(int i = 0; i < nodes.size(); i++) {
          BspNode n = nodes.get(i);
-         Wall struct = n.getWall();
+         Wall wall = n.getWall();
 
-         if(mid.intersects(struct)) {
-            Wall[] split = mid.split(struct);
+         if(mid.intersects(wall)) {
+            Wall[] split = mid.split(wall);
             a.front.add(new BspNode(split[0]));
             a.back.add(new BspNode(split[1]));
          }
-         else if(struct.inFrontOf(mid)) {
+         else if(wall.inFrontOf(mid)) {
             a.front.add(n);
          }
          else {
